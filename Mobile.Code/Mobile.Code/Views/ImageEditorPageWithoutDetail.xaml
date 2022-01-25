@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage
+    x:Class="ImageEditor.Pages.ImageEditorPageWithoutDetail"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:Pad="clr-namespace:SignaturePad.Forms;assembly=SignaturePad.Forms"
+    xmlns:controls="clr-namespace:ImageEditor.Controls"
+    xmlns:ffimageloading="clr-namespace:FFImageLoading.Forms;assembly=FFImageLoading.Forms"
+    xmlns:fontawesome="clr-namespace:FontAwesome"
+    xmlns:helpers="clr-namespace:Mobile.Code.Helpers"
+    xmlns:imageeditor="clr-namespace:Syncfusion.SfImageEditor.XForms;assembly=Syncfusion.SfImageEditor.XForms"
+    xmlns:local="clr-namespace:Mobile.Code.Controls"
+    xmlns:padview="clr-namespace:ImageEditor.Behaviors"
+    x:Name="RootItem"
+    Shell.NavBarIsVisible="False">
+
+
+    <ContentPage.Padding>
+        <OnPlatform x:TypeArguments="Thickness">
+            <On Platform="iOS" Value="0,45,0,0" />
+        </OnPlatform>
+    </ContentPage.Padding>
+    <ContentPage.Content>
+
+        <AbsoluteLayout>
+            <ActivityIndicator
+                AbsoluteLayout.LayoutBounds="0,0,1,1"
+                AbsoluteLayout.LayoutFlags="All"
+                HeightRequest="80"
+                HorizontalOptions="Center"
+                IsRunning="{Binding IsBusyProgress}"
+                VerticalOptions="Center"
+                WidthRequest="80"
+                Color="DarkRed" />
+
+            <Grid AbsoluteLayout.LayoutBounds="0,0,1,1" AbsoluteLayout.LayoutFlags="All">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+                <Grid
+                    x:Name="gridtoolbar1"
+                    Grid.Row="0"
+                    BackgroundColor="White">
+                    <Grid.Margin>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS" Value="0,0,0,0" />
+                            <On Platform="Android, WinPhone, Windows" Value="0" />
+                        </OnPlatform>
+                    </Grid.Margin>
+                    <Grid.Padding>
+                        <OnPlatform x:TypeArguments="Thickness">
+                            <On Platform="iOS" Value="0,0,0,5" />
+                            <On Platform="Android, WinPhone, Windows" Value="0,5,0,5" />
+                        </OnPlatform>
+                    </Grid.Padding>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+
+                    </Grid.ColumnDefinitions>
+
+
+                    <Image
+                        Grid.Column="0"
+                        Margin="10,5,0,0"
+                        HeightRequest="{x:OnPlatform Android=30,
+                                                     iOS=40,
+                                                     UWP=30}"
+                        HorizontalOptions="Start"
+                        Source="{FontImage FontFamily={StaticResource MaterialFontFamily},
+                                           Glyph={x:Static helpers:IconFont.Close},
+                                           Size=50,
+                                           Color=DarkRed}"
+                        VerticalOptions="Center"
+                        WidthRequest="{x:OnPlatform Android=30,
+                                                    iOS=40,
+                                                    UWP=30}">
+                        <Image.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding ClosePageCommand}" />
+                        </Image.GestureRecognizers>
+                    </Image>
+
+                </Grid>
+                <imageeditor:SfImageEditor
+                    x:Name="imagebackground"
+                    Grid.Row="1"
+                    Margin="0,0,0,0"
+                    BackgroundColor="Transparent"
+                    HorizontalOptions="CenterAndExpand"
+                    ImageLoaded="imagebackground_ImageLoaded"
+                    ImageSaved="imagebackground_ImageSaved"
+                    ImageSaving="imagebackground_ImageSaving"
+                    Source="{Binding SelectedImage}"
+                    VerticalOptions="CenterAndExpand" />
+
+                <Grid x:Name="GridOperation" Grid.Row="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+
+                    </Grid.ColumnDefinitions>
+                    <ImageButton
+                        x:Name="prvBtn"
+                        Grid.Row="0"
+                        Grid.Column="0"
+                        BackgroundColor="White"
+                        BorderColor="{DynamicResource Gray-300}"
+                        Command="{Binding PrvCommand}"
+                        CommandParameter="{Binding Source={x:Reference RootItem}}"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        HorizontalOptions="Start"
+                        IsVisible="true"
+                        Source="{FontImage FontFamily={StaticResource MaterialFontFamily},
+                                           Glyph={x:Static helpers:IconFont.ArrowLeft},
+                                           Color=DarkRed,
+                                           Size=28}"
+                        VerticalOptions="CenterAndExpand"
+                        WidthRequest="40" />
+                    <StackLayout
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        Orientation="Horizontal">
+                        <Button
+                            x:Name="savebutton"
+                            Margin="5"
+                            BackgroundColor="#2e479b"
+                            BorderWidth="1"
+                            Command="{Binding SaveImageCommand}"
+                            CommandParameter="{Binding Source={x:Reference RootItem}}"
+                            FontFamily="{StaticResource Montserrat-Regular}"
+                            HeightRequest="35"
+                            HorizontalOptions="Center"
+                            ImageSource="{FontImage FontFamily={StaticResource MaterialFontFamily},
+                                                    Glyph={x:Static helpers:IconFont.Floppy},
+                                                    Color=White,
+                                                    Size=20}"
+                            IsVisible="False"
+                            Text="Save"
+                            TextColor="White"
+                            VerticalOptions="Center"
+                            WidthRequest="120" />
+                        <Button
+                            x:Name="Deletbutton"
+                            Margin="5"
+                            BackgroundColor="DarkRed"
+                            BorderWidth="1"
+                            Command="{Binding DeleteCommand}"
+                            CommandParameter="{Binding Source={x:Reference RootItem}}"
+                            FontFamily="{StaticResource Montserrat-Regular}"
+                            HeightRequest="35"
+                            HorizontalOptions="Center"
+                            ImageSource="{FontImage FontFamily={StaticResource MaterialFontFamily},
+                                                    Glyph={x:Static helpers:IconFont.Delete},
+                                                    Color=White,
+                                                    Size=20}"
+                            Text="Delete"
+                            TextColor="White"
+                            VerticalOptions="Center"
+                            WidthRequest="120" />
+                    </StackLayout>
+
+                    <ImageButton
+                        x:Name="btnNext"
+                        Grid.Row="0"
+                        Grid.Column="2"
+                        BackgroundColor="White"
+                        BorderColor="{DynamicResource Gray-300}"
+                        Command="{Binding NextCommand}"
+                        CommandParameter="{Binding Source={x:Reference RootItem}}"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        HorizontalOptions="End"
+                        IsVisible="true"
+                        Source="{FontImage FontFamily={StaticResource MaterialFontFamily},
+                                           Glyph={x:Static helpers:IconFont.ArrowRight},
+                                           Color=DarkRed,
+                                           Size=28}"
+                        VerticalOptions="Center"
+                        WidthRequest="40" />
+
+
+                </Grid>
+
+            </Grid>
+
+        </AbsoluteLayout>
+
+    </ContentPage.Content>
+
+</ContentPage>

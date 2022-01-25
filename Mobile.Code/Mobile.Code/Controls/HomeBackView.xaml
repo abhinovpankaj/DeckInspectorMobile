@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<ContentView
+    x:Class="Mobile.Code.Controls.HomeBackView"
+    xmlns="http://xamarin.com/schemas/2014/forms"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:d="http://xamarin.com/schemas/2014/forms/design"
+    xmlns:helpers="clr-namespace:Mobile.Code.Helpers"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Grid Margin="0,0,0,0">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="Auto" />
+        </Grid.ColumnDefinitions>
+        <StackLayout Grid.Column="0" Margin="5,0,0,0">
+            <Image
+                Grid.Column="0"
+                Margin="0,15,0,0"
+                HeightRequest="35"
+                HorizontalOptions="Start"
+                Source="LeftArrow.png"
+                VerticalOptions="Start"
+                WidthRequest="35">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoBackCommand}" />
+                </Image.GestureRecognizers>
+            </Image>
+        </StackLayout>
+        <StackLayout Grid.Column="1" Margin="5,0,0,0">
+            <Image
+                Margin="0,15,0,0"
+                HeightRequest="35"
+                HorizontalOptions="Start"
+                Source="home.png"
+                VerticalOptions="Start"
+                WidthRequest="35">
+                <Image.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding GoHomeCommand}" />
+                </Image.GestureRecognizers>
+
+            </Image>
+
+        </StackLayout>
+        <Label Margin="0,13,0,0"
+            Grid.Column="2"
+            
+            FontFamily="{StaticResource MaterialFontFamily}"
+            FontSize="35"
+            HorizontalOptions="Start"
+            
+            Text="{x:Static helpers:IconFont.WifiOff}"
+            TextColor="#2e479b"
+            VerticalOptions="Start" >
+            <Label.Triggers>
+                <DataTrigger TargetType="Label"
+                 Binding="{Binding IsOnline}"
+                 Value="true">
+                    <Setter Property="Text" Value="{x:Static helpers:IconFont.Wifi}" />
+                </DataTrigger>
+                <!--<DataTrigger TargetType="Label"
+                 Binding="{Binding IsAppOnline}"
+                 Value="false">
+                    <Setter Property="Text" Value="{x:Static helpers:IconFont.WifiOff}" />
+                </DataTrigger>-->
+            </Label.Triggers>
+            
+        </Label>
+    </Grid>
+
+</ContentView>
+
